@@ -1,0 +1,15 @@
+.heading{
+    color: red;
+    font-size: 50px;
+}
+
+.second{
+    background-color: green;
+    border: 2px solid black;
+}
+
+.togglee{
+    font-size: 100px;
+    font-family: cursive;
+    color: lawngreen;
+}
