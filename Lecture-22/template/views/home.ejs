@@ -1,0 +1,20 @@
+
+<!-- header add -->
+
+<%- include('./partials/header') %>
+
+    <h1>HI I AM HOME EJS</h1>
+    <button id="btn">Dabaiye na!!</button>
+    <h1> <%= randomNum %></h1>
+    <h4> <%= 25/5 %> </h4>
+
+    <% if(randomNum % 2 ==0 ){ %>
+        <h1>even no</h1>
+    <% }else{ %>
+        <h1>odd no</h1> 
+    <% } %>
+
+<%- include('./partials/footer') %>
+    
+
+<!-- footer add -->
