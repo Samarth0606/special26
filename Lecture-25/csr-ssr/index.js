@@ -19,14 +19,22 @@ app.get('/' , (req,res)=>{
 })
 
 app.get('/todos' , (req,res)=>{
-    res.json(Todos) //coneverts js objects into json
+    if(req.xhr){
+        console.log('ajax req')
+        res.json(Todos) //coneverts js objects into json
+    }
+    else{
+        console.log('traditional req.');
+        res.render('index' , {Todos})
+    }
 })
 
 app.post('/todos' , (req,res)=>{
     let {todo} = req.body;
     // console.log(req.body)
     Todos.push(todo);
-    res.json({msg:'todos are pushed successfully'})
+    // res.json({msg:'todos are pushed successfully'})
+    res.redirect('/todos');
 })
 
 app.listen(8080 , ()=>{
