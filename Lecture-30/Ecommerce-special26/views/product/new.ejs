@@ -1,7 +1,8 @@
-<% layout('layouts/boilerplate') %>
+<%- include('./partials/header') %>
+<%- include('./partials/navbar') %>
 
 
-<div class="row">
+<div class="row margin-form">
     <div class="col-6 mx-auto">
         <form action="/products" method="POST">
             <div class="mb-3">
@@ -28,3 +29,6 @@
         </form>
     </div>
 </div>
+
+
+<%- include('./partials/footer') %>

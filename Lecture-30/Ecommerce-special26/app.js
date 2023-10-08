@@ -4,7 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const seedDB = require('./seed');
 const productRoutes = require('./routes/productRoutes');
-// const ejsMate = require('ejs-mate')
+const methodOverride = require('method-override')
 
 // database connection
 mongoose.set('strictQuery' , true); //version 7 ki vajah se
@@ -18,7 +18,8 @@ app.set('view engine' , 'ejs')
 app.set('views' , path.join(__dirname , 'views'));
 // setting static files
 app.use(express.static(path.join(__dirname,'public')));
-
+app.use(express.urlencoded({extended:true})) //body parsing middleware
+app.use(methodOverride('_method'))//method override
 
 // using all the routes in order to verify the path an run the function
 app.use(productRoutes);

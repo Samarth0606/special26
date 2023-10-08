@@ -15,3 +15,11 @@ main{
 .product-card .btn{
     background-color: var(--main-color) ;
 }
+
+.product-card{
+    height: 60vh;
+}
+
+.margin-form{
+    margin-top: 100px;
+}
