@@ -1,0 +1,50 @@
+
+<%- include('./partials/header') %>
+<%- include('./partials/navbar') %>
+
+<div class="row">
+    <div class="row">
+        <div class="col-lg-6 product-card mt-5">
+                <div class="card shadow mt-3 mx-auto" style="width: 22rem;">
+                    <img class="img" src="<%=foundProduct.img%>" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h3 class="card-title text-center"> <%= foundProduct.name %> </h3>
+                      <h5 class="card-title"> Rs: <%= foundProduct.price %> </h5>
+                      <p class="card-text"> <%= foundProduct.desc %> </p>
+                      <a href="#" class="btn btn-success">Buy</a>
+                      <a href="#" class="btn btn-secondary">Add to Cart</a>
+                      <a href="/products/<%=foundProduct._id%>/edit" class="btn btn-info">Edit</a>
+                      <form class="d-inline-block" action="/products/<%=foundProduct._id%>?_method=DELETE" method="POST">
+                          <button class="btn btn-danger btn-sm">Delete</button>
+                       </form>
+                    </div>
+                </div>
+        </div>
+
+    <div class="col-lg-6 margin-form">
+        <h2 class="display-5">Leave your review</h2>
+        <form action="/products/<%=foundProduct._id%>/review" method="POST">
+            <div>
+                <label for="rate">Rating:</label>
+                <input type="range" min="0" max="5" name="rating" id="rate">
+            </div>
+            <div>
+                <label for="comm">Comment:</label>
+                <textarea name="comment" id="comm" cols="30" rows="3"></textarea>
+            </div>
+            <button type="submit">Add review</button>
+        </form>
+
+        <% for(let item of foundProduct.reviews){ %>
+            <div class="card mt-5">
+                <h2><%=item.rating%></h2>
+                <p><%=item.comment%></p>
+            </div>
+        <% } %>
+        
+
+    </div>
+
+</div>
+
+<%- include('./partials/footer') %>
