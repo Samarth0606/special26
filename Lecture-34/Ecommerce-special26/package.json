@@ -1,0 +1,25 @@
+{
+  "name": "ecommerce-special26",
+  "version": "1.0.0",
+  "description": "ecommerce-for-special26-batch",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./app.js"
+  },
+  "author": "Samarth vohra",
+  "license": "ISC",
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "joi": "^17.11.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^7.6.0",
+    "nodemon": "^3.0.1",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^8.0.0"
+  }
+}
