@@ -25,9 +25,18 @@
             </ul>
           </li> -->
         </ul>
-        <form class="d-flex">
-          <button class="btn btn-outline-dark" type="submit">Login</button>
-        </form>
+        <% if(currentUser){ %>
+          <button class="d-flex">
+            <a href="/login">Login</a>
+          </button>
+        <% } %>
+        <% if(!currentUser){ %>
+          <button class="d-flex">
+          <a href="/logout">Logout</a>
+          <span><%= currentUser.username %></span>
+          </button>
+        <% } %>
+        
       </div>
     </div>
 </nav>
