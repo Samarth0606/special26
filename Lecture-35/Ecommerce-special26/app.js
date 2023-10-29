@@ -29,18 +29,18 @@ app.use(express.urlencoded({extended:true})) //body parsing middleware
 app.use(methodOverride('_method'))//method override
 
 let configSession = {
-    secret: 'keyboard cat',
+    secret: 'kuchBhiSecret',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie:{           //added from here for session expiry
+        httpOnly:true,
+        expires:Date.now() + 1000*60*60*24*7,
+        maxAge: 1000*60*60*24*7
+    }
 }
 app.use(session(configSession));
 app.use(flash());
-app.use((req,res,next)=>{
-    res.locals.currentUser = req.user;
-    res.locals.success = req.flash('success');
-    res.locals.error = req.flash('error');
-    next();
-})
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -49,11 +49,17 @@ passport.deserializeUser(User.deserializeUser());
 
 passport.use(new LocalStrategy(User.authenticate()));
 
+app.use((req,res,next)=>{
+    res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
+
 // using all the routes in order to verify the path an run the function
 app.use(productRoutes);
 app.use(reviewRoutes);
 app.use(authRoutes);
-
 
 // adding dummy data to the collection
 // seedDB()

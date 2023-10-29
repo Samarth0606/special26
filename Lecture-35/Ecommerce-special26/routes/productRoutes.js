@@ -1,5 +1,5 @@
 const express = require('express');
-const { validateProduct } = require('../middleware');
+const { validateProduct , isLoggedIn} = require('../middleware');
 const Product = require('../models/Product');
 const Review = require('../models/Review');
 const router = express.Router(); //mini instance/application;
@@ -17,25 +17,25 @@ router.get('/products' , async (req,res)=>{
 })
 
 // SHOW A NEW FORM
-router.get('/product/new' , (req,res)=>{
+router.get('/product/new' , isLoggedIn , (req,res)=>{
     try{
         res.render('product/new');
     }
     catch(e){
-        res.status(500).render('product/error')
+        res.status(500).render('product/error' , {err:e.message})
     }
 })
 
 // ACTUALLY ADDING IN THE DATABASE
-router.post('/products' , validateProduct  , async(req,res)=>{
+router.post('/products' , isLoggedIn, validateProduct , async(req,res)=>{
     try{
         let {name,img , price , desc} = req.body;
-        await Product.create({name,img , price , desc});
+        await Product.create({name,img , price , desc , author:req.user._id});
         req.flash('success' , 'Product added successfully');
         res.redirect('/products');
     }
     catch(e){
-        res.status(500).render('product/error')
+        res.status(500).render('product/error' , {err:e.message})
     }
 })
 
@@ -48,12 +48,12 @@ router.get('/products/:id' , async(req,res)=>{
         res.render('product/show' , {foundProduct})
     }
     catch(e){
-        res.status(500).render('product/error')
+        res.status(500).render('product/error' , {err:e.message})
     }
 })
 
 // FORM TO EDIT A PARTIICULAR PRODUCT
-router.get('/products/:id/edit' , async(req,res)=>{
+router.get('/products/:id/edit' , isLoggedIn , async(req,res)=>{
     try{
         let {id} = req.params;
         let foundProduct = await Product.findById(id);
@@ -61,13 +61,13 @@ router.get('/products/:id/edit' , async(req,res)=>{
         res.render('product/edit' , {foundProduct})
     }
     catch(e){
-        res.status(500).render('product/error')
+        res.status(500).render('product/error' , {err:e.message})
     }
 })
 
 
 // TO ACTUALLY CHANGE IN db
-router.patch('/products/:id' , validateProduct, async(req,res)=>{
+router.patch('/products/:id' , isLoggedIn , validateProduct,  async(req,res)=>{
     try{
         let {id} = req.params;
         let {name , img , price , desc} = req.body;
@@ -76,12 +76,12 @@ router.patch('/products/:id' , validateProduct, async(req,res)=>{
         res.redirect(`/products/${id}`);
     }
     catch(e){
-        res.status(500).render('product/error')
+        res.status(500).render('product/error' , {err:e.message})
     }
 })
 
 // DELETE THE EXISTING PRODUCT
-router.delete('/products/:id' , async(req,res)=>{
+router.delete('/products/:id' , isLoggedIn , async(req,res)=>{
     try{
         let {id} = req.params;
         // adding from here to delete the reviews as well
