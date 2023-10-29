@@ -61,6 +61,10 @@ app.use(productRoutes);
 app.use(reviewRoutes);
 app.use(authRoutes);
 
+// for 404 page
+app.use("*" , (req,res)=>{
+    res.render('product/error');
+})
 // adding dummy data to the collection
 // seedDB()
 

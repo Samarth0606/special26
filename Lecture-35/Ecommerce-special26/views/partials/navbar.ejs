@@ -12,9 +12,13 @@
         <li class="nav-item">
           <a class="nav-link" href="/products">Products</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/product/new" tabindex="-1" aria-disabled="true">New</a>
-        </li>
+        <% if(currentUser){ %>
+          <% if(currentUser.role === "seller"){ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/product/new" tabindex="-1" aria-disabled="true">New</a>
+            </li>
+          <% } %>
+        <% } %>
       </ul>
       <div class="navbar-nav ml-auto">
 

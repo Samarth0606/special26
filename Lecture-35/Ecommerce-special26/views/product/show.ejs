@@ -15,10 +15,13 @@
                       <p class="card-text"> <%= foundProduct.desc %> </p>
                       <a href="#" class="btn btn-success">Buy</a>
                       <a href="#" class="btn btn-secondary">Add to Cart</a>
-                      <a href="/products/<%=foundProduct._id%>/edit" class="btn btn-info">Edit</a>
-                      <form class="d-inline-block" action="/products/<%=foundProduct._id%>?_method=DELETE" method="POST">
-                          <button class="btn btn-danger btn-sm">Delete</button>
-                       </form>
+                        <% if( currentUser && currentUser.role  && currentUser.role ==="seller"){ %>
+                            <a href="/products/<%=foundProduct._id%>/edit" class="btn btn-info">Edit</a>
+                            <form class="d-inline-block" action="/products/<%=foundProduct._id%>?_method=DELETE" method="POST">
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        <% } %>
+
                     </div>
                 </div>
         </div>

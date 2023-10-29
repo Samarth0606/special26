@@ -1,4 +1,5 @@
 
+const Product = require("./models/Product");
 const { productSchema, reviewSchema } = require("./schema");
 
 const validateProduct = (req,res,next)=>{
@@ -32,4 +33,28 @@ const isLoggedIn = (req,res,next)=>{
     next();
 }
 
-module.exports = {validateProduct ,validateReview , isLoggedIn} ;
+
+const isSeller =  (req,res,next)=>{
+    if(!req.user.role){
+        req.flash('error' , 'you donot have the permissions');
+        return res.redirect('/products');
+    }
+    if(req.user.role !== "seller"){
+        req.flash('error' , 'you donot have the permissions');
+        return res.redirect('/products');
+    }
+    next();
+}
+
+const isProductAuthor = async(req,res,next)=>{
+    let {id} = req.params;
+    let product = await Product.findById(id);
+    console.log(product.author);
+    console.log(req.user._id);
+    if(!product.author.equals(req.user._id)){
+        req.flash('error' , 'you are not authorised users');
+        return res.redirect('/products');
+    }
+    next();
+}
+module.exports = {validateProduct ,validateReview , isLoggedIn , isSeller , isProductAuthor} ;

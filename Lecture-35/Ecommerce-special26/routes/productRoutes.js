@@ -1,5 +1,5 @@
 const express = require('express');
-const { validateProduct , isLoggedIn} = require('../middleware');
+const { validateProduct , isLoggedIn , isSeller , isProductAuthor} = require('../middleware');
 const Product = require('../models/Product');
 const Review = require('../models/Review');
 const router = express.Router(); //mini instance/application;
@@ -17,7 +17,7 @@ router.get('/products' , async (req,res)=>{
 })
 
 // SHOW A NEW FORM
-router.get('/product/new' , isLoggedIn , (req,res)=>{
+router.get('/product/new' , isLoggedIn , isSeller, (req,res)=>{
     try{
         res.render('product/new');
     }
@@ -27,7 +27,7 @@ router.get('/product/new' , isLoggedIn , (req,res)=>{
 })
 
 // ACTUALLY ADDING IN THE DATABASE
-router.post('/products' , isLoggedIn, validateProduct , async(req,res)=>{
+router.post('/products' , isLoggedIn, isSeller ,validateProduct , async(req,res)=>{
     try{
         let {name,img , price , desc} = req.body;
         await Product.create({name,img , price , desc , author:req.user._id});
@@ -53,7 +53,7 @@ router.get('/products/:id' , async(req,res)=>{
 })
 
 // FORM TO EDIT A PARTIICULAR PRODUCT
-router.get('/products/:id/edit' , isLoggedIn , async(req,res)=>{
+router.get('/products/:id/edit' , isLoggedIn , isProductAuthor , async(req,res)=>{
     try{
         let {id} = req.params;
         let foundProduct = await Product.findById(id);
@@ -67,7 +67,7 @@ router.get('/products/:id/edit' , isLoggedIn , async(req,res)=>{
 
 
 // TO ACTUALLY CHANGE IN db
-router.patch('/products/:id' , isLoggedIn , validateProduct,  async(req,res)=>{
+router.patch('/products/:id' , isLoggedIn , validateProduct, isProductAuthor ,  async(req,res)=>{
     try{
         let {id} = req.params;
         let {name , img , price , desc} = req.body;
@@ -81,7 +81,7 @@ router.patch('/products/:id' , isLoggedIn , validateProduct,  async(req,res)=>{
 })
 
 // DELETE THE EXISTING PRODUCT
-router.delete('/products/:id' , isLoggedIn , async(req,res)=>{
+router.delete('/products/:id' , isLoggedIn , isProductAuthor , async(req,res)=>{
     try{
         let {id} = req.params;
         // adding from here to delete the reviews as well
